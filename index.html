@@ -1,271 +1,249 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>CERENE Video Studio</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f4f6f8;
-      color: #17202a;
-    }
-
-    .header {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    .badge {
-      background: #eef2ff;
-      color: #4f46e5;
-      padding: 7px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      color: #6b7280;
-      font-size: 17px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 160px;
-      resize: vertical;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 15px;
-      font-size: 16px;
-      font-family: inherit;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    select {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      background: white;
-      font-size: 15px;
-    }
-
-    .generate {
-      width: 100%;
-      margin-top: 25px;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .generate:hover {
-      background: #1f2937;
-    }
-
-    .status {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #f3f4f6;
-      text-align: center;
-      color: #4b5563;
-    }
-
-    .result {
-      display: none;
-      margin-top: 25px;
-      padding: 25px;
-      background: #f9fafb;
-      border-radius: 15px;
-      text-align: center;
-    }
-
-    .result h2 {
-      margin-top: 0;
-    }
-
-    @media (max-width: 700px) {
-      .header {
-        padding: 18px;
-      }
-
-      .hero h1 {
-        font-size: 32px;
-      }
-
-      .options {
-        grid-template-columns: 1fr;
-      }
-
-      .container {
-        margin-top: 30px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CERENE Video Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#101827;color:#fff}
+main{max-width:900px;margin:auto;padding:28px 18px}
+header{text-align:center;padding:25px 0}
+h1{font-size:34px;margin:8px}
+header p,.muted{color:#b9c5d8}
+.panel{background:#1c293c;border:1px solid #34445c;border-radius:18px;padding:22px;margin:18px 0}
+label{display:block;font-weight:bold;margin:18px 0 8px}
+textarea,select{width:100%;padding:13px;border-radius:9px;border:1px solid #52647c;background:#101827;color:white;font:inherit}
+textarea{min-height:110px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{border:0;border-radius:10px;padding:14px 18px;font-weight:bold;font-size:15px;cursor:pointer}
+.primary{background:#71e0bc;color:#102b2b;width:100%;margin-top:20px}
+.secondary{background:#33445c;color:white;margin-top:12px}
+canvas{display:block;width:100%;background:#172338;border-radius:12px;margin-top:14px}
+#status{padding:12px 0;line-height:1.5;color:#c8d6e8}
+.note{font-size:13px;line-height:1.6;color:#b9c5d8}
+@media(max-width:600px){.row{grid-template-columns:1fr}h1{font-size:27px}}
+</style>
 </head>
-
 <body>
+<main>
+<header>
+<div style="font-size:42px">🎬</div>
+<h1>CERENE Video Studio</h1>
+<p>Ton histoire. Ton imagination. Ton film.</p>
+</header>
 
-  <header class="header">
-    <div class="logo">🎬 CERENE Video Studio</div>
-    <div class="badge">IA • Création vidéo</div>
-  </header>
+<section class="panel">
+<h2>1. Crée ton court-métrage</h2>
+<label for="story">Décris ton histoire</label>
+<textarea id="story" placeholder="Exemple : Un jeune garçon joue au football dans un parc ensoleillé et marque un magnifique but."></textarea>
 
-  <main class="container">
+<div class="row">
+<div>
+<label for="style">Style visuel</label>
+<select id="style">
+<option>Animation 3D</option>
+<option>Dessin animé</option>
+<option>Anime</option>
+<option>Film cinématographique</option>
+</select>
+</div>
+<div>
+<label for="duration">Durée</label>
+<select id="duration">
+<option value="5">5 secondes</option>
+<option value="10">10 secondes</option>
+<option value="15">15 secondes</option>
+<option value="30">30 secondes</option>
+</select>
+</div>
+</div>
 
-    <section class="hero">
-      <h1>Crée ton court-métrage</h1>
-      <p>Décris ton histoire et prépare une vidéo animée avec l'intelligence artificielle.</p>
-    </section>
+<label for="mode">Mode de création</label>
+<select id="mode">
+<option value="free">🆓 Animation gratuite dans le navigateur</option>
+<option value="ai">✨ Génération vidéo par IA</option>
+</select>
 
-    <section class="card">
+<button class="primary" id="create">🎬 Créer mon animation</button>
+<p id="status" role="status">Choisis ton histoire et lance la création.</p>
+</section>
 
-      <label for="prompt">Décris ta vidéo</label>
+<section class="panel">
+<h2>2. Ton studio de création</h2>
+<p class="muted">Aperçu animé de ton projet</p>
+<canvas id="scene" width="800" height="450"></canvas>
+<button class="secondary" id="download" disabled>⬇️ Exporter ma vidéo</button>
+<p class="note">Le mode gratuit crée une animation graphique à partir de ton texte. Il ne crée pas automatiquement des images réalistes ni des scènes complètes à partir du texte.</p>
+</section>
 
-      <textarea
-        id="prompt"
-        placeholder="Exemple : Warren joue au football dans la cour du collège. Il remarque qu'un camarade est seul et décide de venir lui parler..."
-      ></textarea>
+<section class="panel">
+<h2>3. Génération vidéo par IA</h2>
+<p>Ce mode sera activé après la connexion à un véritable service de génération vidéo. Aucun fournisseur n'est connecté pour le moment.</p>
+<p class="note">Nous privilégierons une solution avec une offre gratuite lorsqu'elle sera disponible. Ne place jamais de clé API secrète dans ce fichier.</p>
+</section>
+<p class="note" style="text-align:center">CERENE Video Studio · Atelier créatif</p>
+</main>
 
-      <div class="options">
+<script>
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+const story = document.getElementById('story');
+const style = document.getElementById('style');
+const duration = document.getElementById('duration');
+const mode = document.getElementById('mode');
+const status = document.getElementById('status');
+const create = document.getElementById('create');
+const download = document.getElementById('download');
 
-        <div>
-          <label for="style">Style</label>
-          <select id="style">
-            <option>Animation 3D</option>
-            <option>Dessin animé</option>
-            <option>Anime</option>
-            <option>Film cinématographique</option>
-          </select>
-        </div>
+let animationId = null;
+let recording = null;
+let chunks = [];
+let running = false;
 
-        <div>
-          <label for="duration">Durée</label>
-          <select id="duration">
-            <option>5 secondes</option>
-            <option>10 secondes</option>
-            <option>15 secondes</option>
-            <option>30 secondes</option>
-          </select>
-        </div>
+function drawFrame(t, message) {
+  const w = canvas.width, h = canvas.height;
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, '#547bb4');
+  sky.addColorStop(1, '#b5d9ed');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, w, h);
 
-      </div>
+  ctx.fillStyle = '#f8d88a';
+  ctx.beginPath();
+  ctx.arc(680, 85, 38, 0, Math.PI * 2);
+  ctx.fill();
 
-      <button class="generate" onclick="prepareVideo()">
-        🎬 Préparer la vidéo
-      </button>
+  ctx.fillStyle = '#528a65';
+  ctx.fillRect(0, 310, w, 140);
+  ctx.fillStyle = '#76aa70';
+  ctx.fillRect(0, 310, w, 12);
 
-      <div class="status" id="status">
-        ✨ Préparation de votre projet vidéo...
-      </div>
+  for (let i = 0; i < 8; i++) {
+    const x = i * 115 + 20;
+    ctx.fillStyle = '#346b50';
+    ctx.beginPath();
+    ctx.arc(x, 280, 32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#6c9c69';
+    ctx.fillRect(x - 5, 280, 10, 36);
+  }
 
-      <div class="result" id="result">
-        <h2>🎥 Votre projet est prêt</h2>
-        <p id="resultText"></p>
-      </div>
+  const ballX = 180 + ((t * 90) % 430);
+  const ballY = 375 + Math.sin(t * 4) * 12;
+  ctx.fillStyle = '#f8fafc';
+  ctx.beginPath();
+  ctx.arc(ballX, ballY, 18, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1f2937';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.fillStyle = '#1f2937';
+  ctx.beginPath();
+  ctx.arc(ballX, ballY, 7, 0, Math.PI * 2);
+  ctx.fill();
 
-    </section>
+  ctx.fillStyle = 'rgba(12, 24, 42, 0.78)';
+  ctx.fillRect(28, 28, 744, 105);
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 28px Arial';
+  const title = message.length > 55 ? message.slice(0, 52) + '…' : message;
+  ctx.fillText(title || 'Mon premier court-métrage', 400, 72);
+  ctx.font = '18px Arial';
+  ctx.fillStyle = '#a7f3d0';
+  ctx.fillText(style.value + ' · CERENE Video Studio', 400, 108);
 
-  </main>
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '15px Arial';
+  ctx.fillText('Une histoire à imaginer', 400, 428);
+}
 
-  <script>
+function frameLoop(start, message) {
+  if (!running) return;
+  drawFrame((performance.now() - start) / 1000, message);
+  animationId = requestAnimationFrame(() => frameLoop(start, message));
+}
 
-    function prepareVideo() {
+create.addEventListener('click', () => {
+  const message = story.value.trim();
+  if (!message) {
+    status.textContent = 'Écris une petite histoire avant de commencer.';
+    story.focus();
+    return;
+  }
 
-      const prompt = document.getElementById("prompt").value.trim();
-      const style = document.getElementById("style").value;
-      const duration = document.getElementById("duration").value;
+  if (mode.value === 'ai') {
+    status.textContent = 'La génération IA n’est pas encore connectée. Choisis le mode gratuit pour créer une animation dès maintenant.';
+    return;
+  }
 
-      if (!prompt) {
-        alert("Décris d'abord la vidéo que tu veux créer.");
-        return;
-      }
+  if (!canvas.captureStream || !window.MediaRecorder) {
+    status.textContent = 'Ton navigateur ne permet pas l’export vidéo ici. Essaie la dernière version de Safari ou Chrome.';
+    return;
+  }
 
-      const status = document.getElementById("status");
-      const result = document.getElementById("result");
-      const resultText = document.getElementById("resultText");
+  running = false;
+  if (animationId) cancelAnimationFrame(animationId);
+  if (recording && recording.state !== 'inactive') recording.stop();
 
-      status.style.display = "block";
-      result.style.display = "none";
+  chunks = [];
+  download.disabled = true;
+  running = true;
+  const seconds = Number(duration.value);
+  const start = performance.now();
+  frameLoop(start, message);
 
-      setTimeout(() => {
+  const stream = canvas.captureStream(24);
+  let mime = '';
+  for (const type of ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/mp4']) {
+    if (MediaRecorder.isTypeSupported(type)) { mime = type; break; }
+  }
 
-        status.style.display = "none";
-        result.style.display = "block";
+  try {
+    recording = new MediaRecorder(stream, mime ? {mimeType:mime} : {});
+  } catch (e) {
+    running = false;
+    cancelAnimationFrame(animationId);
+    stream.getTracks().forEach(track => track.stop());
+    status.textContent = 'Impossible de lancer l’export sur ce navigateur. Essaie Chrome ou une version récente de Safari.';
+    return;
+  }
 
-        resultText.textContent =
-          "Style : " + style +
-          " • Durée : " + duration +
-          " • Description enregistrée avec succès.";
+  recording.ondataavailable = e => {
+    if (e.data.size > 0) chunks.push(e.data);
+  };
+  recording.onstop = () => {
+    stream.getTracks().forEach(track => track.stop());
+    running = false;
+    cancelAnimationFrame(animationId);
+    download.disabled = chunks.length === 0;
+    status.textContent = chunks.length
+      ? 'Animation créée ! Tu peux maintenant exporter ta vidéo.'
+      : 'Aucune vidéo n’a été créée. Essaie un autre navigateur.';
+  };
 
-      }, 1200);
-    }
+  recording.start();
+  status.textContent = 'Création de ton animation…';
+  setTimeout(() => {
+    if (recording && recording.state === 'recording') recording.stop();
+  }, seconds * 1000);
+});
 
-  </script>
+download.addEventListener('click', () => {
+  if (!chunks.length) return;
+  const type = recording.mimeType || 'video/webm';
+  const blob = new Blob(chunks, {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = type.includes('mp4') ? 'cerene-animation.mp4' : 'cerene-animation.webm';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
 
+drawFrame(0, 'Bienvenue dans ton studio !');
+</script>
 </body>
 </html>
