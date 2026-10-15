@@ -2,24 +2,47 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CERENE Animation Studio — 2D</title>
+<title>CERENE Animation Studio — Version 3</title>
 <style>
 :root{font-family:system-ui,-apple-system,Arial,sans-serif;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f7f7ff}header{background:linear-gradient(120deg,#31205c,#142b55);padding:26px 20px;border-bottom:1px solid #4b4b7a}header>div,main{max-width:1120px;margin:auto}h1{margin:0 0 8px;font-size:clamp(26px,4vw,38px)}header p{margin:0;color:#d9d4ff}main{padding:24px 16px;display:grid;grid-template-columns:320px minmax(0,1fr);gap:22px}section{background:#18213a;border:1px solid #33415f;border-radius:16px;padding:20px}h2{font-size:18px;margin:0 0 14px}label{display:block;font-weight:650;font-size:13px;margin:13px 0 6px}input,select,textarea{display:block;width:100%;background:#0d1629;color:#fff;border:1px solid #4d6082;border-radius:9px;padding:10px;font:inherit}textarea{resize:vertical;min-height:72px}button{border:0;border-radius:10px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;background:#8b5cf6;color:white}button.secondary{background:#324363}button:disabled{opacity:.5;cursor:wait}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.actions button{flex:1;min-width:125px}canvas{width:100%;height:auto;display:block;border-radius:12px;background:#bfe8ff}.preview{min-width:0}.note{color:#b8c6e2;font-size:13px;line-height:1.5}.status{min-height:20px;color:#bcd7ff;font-size:14px;margin:12px 0 0}.hint{margin:0 0 16px;color:#c3cee5;font-size:14px}@media(max-width:780px){main{grid-template-columns:1fr}.preview{grid-row:1}}@media(prefers-reduced-motion:reduce){button{scroll-behavior:auto}}
+
+.character-editor{border:1px solid #465778;border-radius:12px;padding:12px;margin-top:14px;background:#111b30}
+.character-editor h3{margin:0 0 8px;font-size:15px;color:#ddd3ff}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.editor-grid label{font-size:12px}
+.editor-grid select,.editor-grid input{min-width:0}
+@media(max-width:400px){.editor-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><div><h1>🎬 CERENE Animation Studio</h1><p>Crée tes histoires animées en 2D — gratuitement, sans quota.</p></div></header>
+<header><div><h1>🎬 CERENE Animation Studio — V3</h1><p>Crée tes histoires animées en 2D — gratuitement, sans quota.</p></div></header>
 <main>
 <section class="controls">
 <h2>🎨 Personnaliser l'histoire</h2>
 <label for="style">Style graphique</label><select id="style"><option value="moderne">Dessin animé moderne</option><option value="bd">Bande dessinée</option><option value="classique">Cartoon classique</option></select>
 <label for="decor">Décor</label><select id="decor"><option value="classe">Salle de classe</option><option value="foot">Terrain de football</option><option value="ville">Ville</option><option value="foret">Forêt</option></select>
 <label for="nom1">Premier personnage</label><input id="nom1" maxlength="25" value="Alex">
+<div class="character-editor"><h3>🧑 Personnage 1 — Apparence</h3><div class="editor-grid">
+<label>Coiffure<select id="hair1"><option value="court">Courte</option><option value="long">Longue</option><option value="boucle">Bouclée</option><option value="pic">En pics</option><option value="aucun">Sans cheveux</option></select></label>
+<label>Cheveux<input type="color" id="haircolor1" value="#4a2a2a"></label>
+<label>Peau<input type="color" id="skin1" value="#f2c69c"></label>
+<label>Vêtements<input type="color" id="shirt1" value="#8255e8"></label>
+<label>Expression<select id="face1"><option value="sourire">Sourire</option><option value="surpris">Surprise</option><option value="triste">Tristesse</option><option value="colere">Colère</option></select></label>
+<label>Accessoire<select id="accessory1"><option value="aucun">Aucun</option><option value="lunettes">Lunettes</option><option value="casquette">Casquette</option></select></label>
+</div></div>
 <label for="phrase1">Sa réplique</label><textarea id="phrase1" maxlength="180">Salut ! Tu veux créer un dessin animé avec moi ?</textarea>
 <label for="nom2">Deuxième personnage</label><input id="nom2" maxlength="25" value="Camille">
+<div class="character-editor"><h3>🧑 Personnage 2 — Apparence</h3><div class="editor-grid">
+<label>Coiffure<select id="hair2"><option value="court">Courte</option><option value="long" selected>Longue</option><option value="boucle">Bouclée</option><option value="pic">En pics</option><option value="aucun">Sans cheveux</option></select></label>
+<label>Cheveux<input type="color" id="haircolor2" value="#3a2e24"></label>
+<label>Peau<input type="color" id="skin2" value="#b77d55"></label>
+<label>Vêtements<input type="color" id="shirt2" value="#16a6a0"></label>
+<label>Expression<select id="face2"><option value="sourire">Sourire</option><option value="surpris">Surprise</option><option value="triste">Tristesse</option><option value="colere">Colère</option></select></label>
+<label>Accessoire<select id="accessory2"><option value="aucun">Aucun</option><option value="lunettes">Lunettes</option><option value="casquette">Casquette</option></select></label>
+</div></div>
 <label for="phrase2">Sa réponse</label><textarea id="phrase2" maxlength="180">Oui ! C'est parti pour une nouvelle aventure !</textarea>
 <div class="actions"><button id="play">▶ Générer l'animation</button><button class="secondary" id="stop">■ Arrêter</button></div>
-<p class="note">Les trois styles sont dessinés par le navigateur : aucune photo n'est envoyée à un service externe. Cette version utilise des personnages inventés, pas encore de transformation de photos.</p>
+<p class="note">Personnalise les deux personnages et visualise les changements immédiatement. Aucun fichier ni aucune donnée ne sont envoyés à un service externe.</p>
 </section>
 <section class="preview">
 <h2>🎞️ Aperçu de la scène</h2>
@@ -50,10 +73,11 @@ function background(scene){
   rect(0,355,W,185,'#929bb0');for(let i=0;i<7;i++){let x=i*150-10,h=145+(i%3)*46;rect(x,355-h,126,h,['#e8a26f','#bba8e4','#78bbcf'][i%3]);for(let j=0;j<3;j++)for(let k=0;k<2;k++)rounded(x+20+k*55,375-h+j*47,27,32,2,'#e6f4ff')}rect(0,445,W,95,'#6e7b91');for(let i=0;i<7;i++)rect(i*155+35,489,83,5,'#fff5bd');
  }else{rect(0,345,W,195,'#85c875');for(let i=0;i<8;i++){let x=50+i*128;rect(x,230+(i%2)*22,18,190,'#946b48');ellipse(x+9,224+(i%2)*22,62,85,i%2?'#4a9e66':'#2c875d')}rect(0,440,W,100,'#70b86a')}
 }
-function character(x,y,skin,shirt,style,t,side){
+function character(x,y,style,t,side){
+ const n=side+1,skin=val('skin'+n),shirt=val('shirt'+n),hair=val('haircolor'+n),cut=val('hair'+n),face=val('face'+n),accessory=val('accessory'+n);
  const bob=Math.sin(t/220+side)*((t>0&&t<3500)?5:1.5),walk=(t>0&&t<3500)?Math.sin(t/125+side)*11:0;
- ctx.save();ctx.translate(x,y+bob);if(style==='classique'){ctx.scale(1.04,.96)}
- const outline=style==='bd'?'#182139':style==='classique'?'#303044':'#42465e';const thick=style==='bd'?6:style==='classique'?4:2;
+ ctx.save();ctx.translate(x,y+bob);if(style==='classique')ctx.scale(1.04,.96);
+ const outline=style==='bd'?'#182139':style==='classique'?'#303044':'#42465e',thick=style==='bd'?6:style==='classique'?4:2;
  ellipse(0,5,54,12,'#00000022');
  line(-16,-91,-23+walk,-11,outline,thick+12);line(16,-91,23-walk,-11,outline,thick+12);
  line(-23+walk,-11,-28+walk,0,'#252a4d',15);line(23-walk,-11,28-walk,0,'#252a4d',15);
@@ -61,17 +85,28 @@ function character(x,y,skin,shirt,style,t,side){
  line(-35,-170,-65,-117+walk,skin,18);line(35,-170,65,-117-walk,skin,18);
  ellipse(0,-251,style==='classique'?52:47,57,skin);
  ctx.strokeStyle=outline;ctx.lineWidth=thick;ctx.beginPath();ctx.ellipse(0,-251,style==='classique'?52:47,57,0,0,Math.PI*2);ctx.stroke();
+ if(cut==='long'){ellipse(-39,-242,16,69,hair);ellipse(39,-242,16,69,hair);ellipse(0,-300,42,19,hair)}
+ else if(cut==='boucle'){for(let i=-3;i<=3;i++)ellipse(i*14,-300-(i%2)*8,15,18,hair)}
+ else if(cut==='pic'){ctx.fillStyle=hair;ctx.beginPath();ctx.moveTo(-44,-282);for(let i=0;i<7;i++){let xx=-42+i*14;ctx.lineTo(xx,-321-(i%2)*13);ctx.lineTo(xx+12,-285)}ctx.closePath();ctx.fill()}
+ else if(cut==='court'){ellipse(-30,-288,23,16,hair);ellipse(0,-300,33,18,hair);ellipse(25,-288,22,15,hair)}
+ if(face==='colere'){line(-29,-272,-7,-266,outline,3);line(7,-266,29,-272,outline,3)}
  ellipse(-17,-255,style==='classique'?10:8,style==='classique'?14:11,'white');ellipse(17,-255,style==='classique'?10:8,style==='classique'?14:11,'white');ellipse(-15,-254,4,6,'#1b2340');ellipse(19,-254,4,6,'#1b2340');
- ctx.strokeStyle='#7a3e47';ctx.lineWidth=3;ctx.beginPath();ctx.arc(1,-238,13,.12,Math.PI-.12);ctx.stroke();
- ellipse(-30,-288,23,16,side===0?'#4a2a2a':'#3a2e24');ellipse(0,-300,33,18,side===0?'#4a2a2a':'#3a2e24');ellipse(25,-288,22,15,side===0?'#4a2a2a':'#3a2e24');
+ ctx.strokeStyle='#7a3e47';ctx.lineWidth=3;ctx.beginPath();
+ if(face==='sourire')ctx.arc(1,-238,13,.12,Math.PI-.12);
+ else if(face==='triste')ctx.arc(1,-220,13,Math.PI+.15,Math.PI*2-.15);
+ else if(face==='colere'){ctx.moveTo(-11,-230);ctx.lineTo(11,-230)}
+ else {ctx.ellipse(1,-230,7,11,0,0,Math.PI*2)}ctx.stroke();
+ if(accessory==='lunettes'){ctx.strokeStyle='#202938';ctx.lineWidth=4;ctx.beginPath();ctx.arc(-17,-254,16,0,Math.PI*2);ctx.arc(17,-254,16,0,Math.PI*2);ctx.moveTo(-1,-254);ctx.lineTo(1,-254);ctx.moveTo(-33,-255);ctx.lineTo(-46,-260);ctx.moveTo(33,-255);ctx.lineTo(46,-260);ctx.stroke()}
+ if(accessory==='casquette'){ellipse(0,-306,49,16,'#2563eb');rounded(-8,-307,65,9,4,'#1d4ed8')}
  if(style==='bd'){ctx.strokeStyle='#1e293b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-40,-283);ctx.lineTo(-50,-301);ctx.moveTo(41,-282);ctx.lineTo(54,-301);ctx.stroke()}
  if(style==='classique'){ellipse(-30,-240,9,5,'#ed8f8f77');ellipse(30,-240,9,5,'#ed8f8f77')}
  ctx.restore();
 }
+
 function wrap(text,maxWidth,font){ctx.font=font;const words=(text||'…').trim().split(/\s+/);let lines=[],current='';for(const word of words){let test=current?current+' '+word:word;if(ctx.measureText(test).width>maxWidth&&current){lines.push(current);current=word}else current=test}if(current)lines.push(current);return lines.slice(0,4)}
 function bubble(text,x,y,style){const font='23px system-ui',lines=wrap(text,400,font),height=Math.max(75,lines.length*31+36),bx=Math.max(15,Math.min(W-460,x-230)),by=Math.max(16,y-height);rounded(bx,by,460,height,style==='bd'?4:24,'#fff',style==='bd'?'#111827':'#526078');ctx.fillStyle='#162038';ctx.font=font;ctx.textAlign='center';lines.forEach((line,i)=>ctx.fillText(line,bx+230,by+35+i*31));ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(x-12,by+height);ctx.lineTo(x+13,by+height);ctx.lineTo(x,by+height+18);ctx.fill()}
 function name(text,x,y){ctx.font='bold 22px system-ui';ctx.textAlign='center';ctx.fillStyle='#17253b';ctx.fillText((text||'Personnage').slice(0,25),x,y)}
-function render(ms){const style=val('style'),scene=val('decor');background(scene);const move=Math.min(ms/3000,1),x1=140+move*150,x2=820-move*150;character(x1,470,'#f2c69c','#8255e8',style,ms,0);character(x2,470,'#b77d55','#16a6a0',style,ms,1);name(val('nom1'),x1,508);name(val('nom2'),x2,508);
+function render(ms){const style=val('style'),scene=val('decor');background(scene);const move=Math.min(ms/3000,1),x1=140+move*150,x2=820-move*150;character(x1,470,style,ms,0);character(x2,470,style,ms,1);name(val('nom1'),x1,508);name(val('nom2'),x2,508);
  if(ms>=3100&&ms<6400)bubble(val('phrase1'),x1+70,174,style);if(ms>=6400)bubble(val('phrase2'),x2-70,174,style);
  if(ms<3100){ctx.font='bold 27px system-ui';ctx.textAlign='center';ctx.fillStyle='#24324d';ctx.fillText('Une nouvelle histoire commence…',480,58)}
 }
@@ -79,7 +114,7 @@ function stop(){if(raf)cancelAnimationFrame(raf);raf=0;playing=false;$('status')
 function frame(now){const ms=Math.min(now-start,DURATION);render(ms);if(ms<DURATION){raf=requestAnimationFrame(frame)}else{raf=0;playing=false;$('status').textContent='Animation terminée ! Clique sur Rejouer pour la revoir.'}}
 function play(){if(raf)cancelAnimationFrame(raf);playing=true;start=performance.now();$('status').textContent='Animation en cours…';raf=requestAnimationFrame(frame)}
 $('play').addEventListener('click',play);$('replay').addEventListener('click',play);$('stop').addEventListener('click',stop);
-for(const id of ['style','decor','nom1','nom2','phrase1','phrase2'])$(id).addEventListener('input',()=>{if(!playing)render(0)});
+for(const id of ['style','decor','nom1','nom2','phrase1','phrase2',...['hair','haircolor','skin','shirt','face','accessory'].flatMap(k=>[k+'1',k+'2'])])$(id).addEventListener('input',()=>{if(!playing)render(0)});
 render(0);
 </script>
 </body></html>
