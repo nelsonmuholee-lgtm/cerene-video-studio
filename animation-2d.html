@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CERENE Animation Studio — 2D</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f7f7ff}header{background:linear-gradient(120deg,#31205c,#142b55);padding:26px 20px;border-bottom:1px solid #4b4b7a}header>div,main{max-width:1120px;margin:auto}h1{margin:0 0 8px;font-size:clamp(26px,4vw,38px)}header p{margin:0;color:#d9d4ff}main{padding:24px 16px;display:grid;grid-template-columns:320px minmax(0,1fr);gap:22px}section{background:#18213a;border:1px solid #33415f;border-radius:16px;padding:20px}h2{font-size:18px;margin:0 0 14px}label{display:block;font-weight:650;font-size:13px;margin:13px 0 6px}input,select,textarea{display:block;width:100%;background:#0d1629;color:#fff;border:1px solid #4d6082;border-radius:9px;padding:10px;font:inherit}textarea{resize:vertical;min-height:72px}button{border:0;border-radius:10px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;background:#8b5cf6;color:white}button.secondary{background:#324363}button:disabled{opacity:.5;cursor:wait}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.actions button{flex:1;min-width:125px}canvas{width:100%;height:auto;display:block;border-radius:12px;background:#bfe8ff}.preview{min-width:0}.note{color:#b8c6e2;font-size:13px;line-height:1.5}.status{min-height:20px;color:#bcd7ff;font-size:14px;margin:12px 0 0}.hint{margin:0 0 16px;color:#c3cee5;font-size:14px}@media(max-width:780px){main{grid-template-columns:1fr}.preview{grid-row:1}}@media(prefers-reduced-motion:reduce){button{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div><h1>🎬 CERENE Animation Studio</h1><p>Crée tes histoires animées en 2D — gratuitement, sans quota.</p></div></header>
+<main>
+<section class="controls">
+<h2>🎨 Personnaliser l'histoire</h2>
+<label for="style">Style graphique</label><select id="style"><option value="moderne">Dessin animé moderne</option><option value="bd">Bande dessinée</option><option value="classique">Cartoon classique</option></select>
+<label for="decor">Décor</label><select id="decor"><option value="classe">Salle de classe</option><option value="foot">Terrain de football</option><option value="ville">Ville</option><option value="foret">Forêt</option></select>
+<label for="nom1">Premier personnage</label><input id="nom1" maxlength="25" value="Alex">
+<label for="phrase1">Sa réplique</label><textarea id="phrase1" maxlength="180">Salut ! Tu veux créer un dessin animé avec moi ?</textarea>
+<label for="nom2">Deuxième personnage</label><input id="nom2" maxlength="25" value="Camille">
+<label for="phrase2">Sa réponse</label><textarea id="phrase2" maxlength="180">Oui ! C'est parti pour une nouvelle aventure !</textarea>
+<div class="actions"><button id="play">▶ Générer l'animation</button><button class="secondary" id="stop">■ Arrêter</button></div>
+<p class="note">Les trois styles sont dessinés par le navigateur : aucune photo n'est envoyée à un service externe. Cette version utilise des personnages inventés, pas encore de transformation de photos.</p>
+</section>
+<section class="preview">
+<h2>🎞️ Aperçu de la scène</h2>
+<p class="hint">Change le style ou le décor, puis lance l'animation.</p>
+<canvas id="scene" width="960" height="540" aria-label="Scène de dessin animé avec deux personnages et leurs dialogues"></canvas>
+<p class="status" id="status" role="status">Prêt à créer une animation de 10 secondes.</p>
+<div class="actions"><button class="secondary" id="replay">↻ Rejouer</button></div>
+<p class="note">Fonctionne hors ligne après téléchargement. L'export vidéo et l'importation d'images seront améliorés dans une prochaine étape.</p>
+</section>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('scene'),ctx=canvas.getContext('2d');
+const W=960,H=540,DURATION=10000;let raf=0,start=0,playing=false;
+const val=id=>$(id).value;
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
+function line(x1,y1,x2,y2,c,width=3){ctx.strokeStyle=c;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+function ellipse(x,y,rx,ry,c){ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill()}
+function rounded(x,y,w,h,r,c,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=c;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=3;ctx.stroke()}}
+function cloud(x,y){ellipse(x,y,50,20,'#fff');ellipse(x-20,y-12,27,25,'#fff');ellipse(x+20,y-15,32,28,'#fff')}
+function background(scene){
+ const sky=ctx.createLinearGradient(0,0,0,410);sky.addColorStop(0,'#8cd1ff');sky.addColorStop(1,'#e2f8ff');rect(0,0,W,H,sky);cloud(150,92);cloud(730,80);
+ if(scene==='classe'){
+  rect(0,365,W,175,'#c6a67d');rect(0,345,W,20,'#9b7651');rounded(310,82,340,185,12,'#23765f','#e6b77b');rounded(332,101,296,143,4,'#195844');ctx.fillStyle='#e4fff2';ctx.font='bold 30px system-ui';ctx.textAlign='center';ctx.fillText('CERENE STUDIO',480,175);rounded(65,115,155,150,5,'#fff','#98785b');rect(78,130,129,121,'#b4e5ff');line(142,130,142,251,'#98785b',6);line(78,188,207,188,'#98785b',6);rounded(45,412,190,20,5,'#a56e49');rounded(725,412,190,20,5,'#a56e49');
+ }else if(scene==='foot'){
+  rect(0,330,W,210,'#5ebc69');for(let i=0;i<8;i++)rect(i*120,330,60,210,'#54b261');line(480,333,480,535,'#eaffea',4);ctx.strokeStyle='#eaffea';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(480,434,88,70,0,0,Math.PI*2);ctx.stroke();rounded(60,360,130,95,0,'#fff');rect(66,365,118,84,'#65b86b');
+ }else if(scene==='ville'){
+  rect(0,355,W,185,'#929bb0');for(let i=0;i<7;i++){let x=i*150-10,h=145+(i%3)*46;rect(x,355-h,126,h,['#e8a26f','#bba8e4','#78bbcf'][i%3]);for(let j=0;j<3;j++)for(let k=0;k<2;k++)rounded(x+20+k*55,375-h+j*47,27,32,2,'#e6f4ff')}rect(0,445,W,95,'#6e7b91');for(let i=0;i<7;i++)rect(i*155+35,489,83,5,'#fff5bd');
+ }else{rect(0,345,W,195,'#85c875');for(let i=0;i<8;i++){let x=50+i*128;rect(x,230+(i%2)*22,18,190,'#946b48');ellipse(x+9,224+(i%2)*22,62,85,i%2?'#4a9e66':'#2c875d')}rect(0,440,W,100,'#70b86a')}
+}
+function character(x,y,skin,shirt,style,t,side){
+ const bob=Math.sin(t/220+side)*((t>0&&t<3500)?5:1.5),walk=(t>0&&t<3500)?Math.sin(t/125+side)*11:0;
+ ctx.save();ctx.translate(x,y+bob);if(style==='classique'){ctx.scale(1.04,.96)}
+ const outline=style==='bd'?'#182139':style==='classique'?'#303044':'#42465e';const thick=style==='bd'?6:style==='classique'?4:2;
+ ellipse(0,5,54,12,'#00000022');
+ line(-16,-91,-23+walk,-11,outline,thick+12);line(16,-91,23-walk,-11,outline,thick+12);
+ line(-23+walk,-11,-28+walk,0,'#252a4d',15);line(23-walk,-11,28-walk,0,'#252a4d',15);
+ rounded(-42,-200,84,115,25,shirt,outline);
+ line(-35,-170,-65,-117+walk,skin,18);line(35,-170,65,-117-walk,skin,18);
+ ellipse(0,-251,style==='classique'?52:47,57,skin);
+ ctx.strokeStyle=outline;ctx.lineWidth=thick;ctx.beginPath();ctx.ellipse(0,-251,style==='classique'?52:47,57,0,0,Math.PI*2);ctx.stroke();
+ ellipse(-17,-255,style==='classique'?10:8,style==='classique'?14:11,'white');ellipse(17,-255,style==='classique'?10:8,style==='classique'?14:11,'white');ellipse(-15,-254,4,6,'#1b2340');ellipse(19,-254,4,6,'#1b2340');
+ ctx.strokeStyle='#7a3e47';ctx.lineWidth=3;ctx.beginPath();ctx.arc(1,-238,13,.12,Math.PI-.12);ctx.stroke();
+ ellipse(-30,-288,23,16,side===0?'#4a2a2a':'#3a2e24');ellipse(0,-300,33,18,side===0?'#4a2a2a':'#3a2e24');ellipse(25,-288,22,15,side===0?'#4a2a2a':'#3a2e24');
+ if(style==='bd'){ctx.strokeStyle='#1e293b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-40,-283);ctx.lineTo(-50,-301);ctx.moveTo(41,-282);ctx.lineTo(54,-301);ctx.stroke()}
+ if(style==='classique'){ellipse(-30,-240,9,5,'#ed8f8f77');ellipse(30,-240,9,5,'#ed8f8f77')}
+ ctx.restore();
+}
+function wrap(text,maxWidth,font){ctx.font=font;const words=(text||'…').trim().split(/\s+/);let lines=[],current='';for(const word of words){let test=current?current+' '+word:word;if(ctx.measureText(test).width>maxWidth&&current){lines.push(current);current=word}else current=test}if(current)lines.push(current);return lines.slice(0,4)}
+function bubble(text,x,y,style){const font='23px system-ui',lines=wrap(text,400,font),height=Math.max(75,lines.length*31+36),bx=Math.max(15,Math.min(W-460,x-230)),by=Math.max(16,y-height);rounded(bx,by,460,height,style==='bd'?4:24,'#fff',style==='bd'?'#111827':'#526078');ctx.fillStyle='#162038';ctx.font=font;ctx.textAlign='center';lines.forEach((line,i)=>ctx.fillText(line,bx+230,by+35+i*31));ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(x-12,by+height);ctx.lineTo(x+13,by+height);ctx.lineTo(x,by+height+18);ctx.fill()}
+function name(text,x,y){ctx.font='bold 22px system-ui';ctx.textAlign='center';ctx.fillStyle='#17253b';ctx.fillText((text||'Personnage').slice(0,25),x,y)}
+function render(ms){const style=val('style'),scene=val('decor');background(scene);const move=Math.min(ms/3000,1),x1=140+move*150,x2=820-move*150;character(x1,470,'#f2c69c','#8255e8',style,ms,0);character(x2,470,'#b77d55','#16a6a0',style,ms,1);name(val('nom1'),x1,508);name(val('nom2'),x2,508);
+ if(ms>=3100&&ms<6400)bubble(val('phrase1'),x1+70,174,style);if(ms>=6400)bubble(val('phrase2'),x2-70,174,style);
+ if(ms<3100){ctx.font='bold 27px system-ui';ctx.textAlign='center';ctx.fillStyle='#24324d';ctx.fillText('Une nouvelle histoire commence…',480,58)}
+}
+function stop(){if(raf)cancelAnimationFrame(raf);raf=0;playing=false;$('status').textContent='Animation arrêtée. Prêt à recommencer.'}
+function frame(now){const ms=Math.min(now-start,DURATION);render(ms);if(ms<DURATION){raf=requestAnimationFrame(frame)}else{raf=0;playing=false;$('status').textContent='Animation terminée ! Clique sur Rejouer pour la revoir.'}}
+function play(){if(raf)cancelAnimationFrame(raf);playing=true;start=performance.now();$('status').textContent='Animation en cours…';raf=requestAnimationFrame(frame)}
+$('play').addEventListener('click',play);$('replay').addEventListener('click',play);$('stop').addEventListener('click',stop);
+for(const id of ['style','decor','nom1','nom2','phrase1','phrase2'])$(id).addEventListener('input',()=>{if(!playing)render(0)});
+render(0);
+</script>
+</body></html>
